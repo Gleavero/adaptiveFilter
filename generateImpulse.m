@@ -1,6 +1,5 @@
-function out=generateImpulse(t)
-FrameSize = 100;
-NIter = 10;
+function out=generateImpulse(t,FrameSize)
+NIter = length(t)/FrameSize;
 for i=1:NIter
     if mod(i,2) == 0 
         signal((i-1)*FrameSize:i*FrameSize) = 0;
@@ -10,5 +9,5 @@ for i=1:NIter
       signal((i-1)*FrameSize:i*FrameSize) = sin(2*pi*0.055*t((i-1)*FrameSize:i*FrameSize));
     end
 end
-out = signal';
+out = signal;
 end
