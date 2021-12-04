@@ -2,16 +2,16 @@ clear all;
 
 t = 1:1000;
 discreteSize = 10;
-rI = 13;
-pI = 14;
-impulse = generateImpulse(t,40);
+rI = 9;
+pI = 10;
+impulse = generateImpulse(t,100);
 
 noise = generateNoise(t);
 
 additiveMix = impulse+noise;
 
 %Длина адаптивнго фильтра
-L = 32;
+L = 64;
 %Коэффициент забывания
 lam = 1;
 %Оценка дисперсии входного сигнала
