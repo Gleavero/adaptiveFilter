@@ -2,8 +2,8 @@ clear all;
 
 t = 1:1000;
 discreteSize = 10;
-rI = 9;
-pI = 10;
+rI = 95;
+pI = 120;
 impulse = generateImpulse(t,100);
 
 noise = generateNoise(t);
@@ -32,13 +32,15 @@ x = filt(noise,additiveMix,discreteSize,rI,ha1);
 x1 = filt(noise,additiveMix,discreteSize,pI,ha2);
 
 figure
-subplot(5,1,1); plot(t, impulse);
+subplot(5,1,1); plot(t, impulse); axis([0 length(additiveMix) min(additiveMix) max(additiveMix)]);
+% xline(rI*discreteSize); xline(rI*discreteSize+discreteSize); xline(pI*discreteSize); xline(pI*discreteSize+discreteSize);
+xline(rI); xline(rI+discreteSize); xline(pI); xline(pI+discreteSize);
 xlabel('Time'); ylabel('Signal');
-subplot(5,1,2); plot(t, noise);
+subplot(5,1,2); plot(t, noise); axis([0 length(additiveMix) min(additiveMix) max(additiveMix)]);
 xlabel('Time'); ylabel('Noise');
-subplot(5,1,3); plot(t, additiveMix);
+subplot(5,1,3); plot(t, additiveMix); axis([0 length(additiveMix) min(additiveMix) max(additiveMix)]);
 xlabel('Time'); ylabel('Signal+Noise');
-subplot(5,1,4); plot(t, x);
+subplot(5,1,4); plot(t, x); axis([0 length(additiveMix) min(additiveMix) max(additiveMix)]);
 xlabel('Time'); ylabel('Adaptive Filter 1');
-subplot(5,1,5); plot(t, x1);
+subplot(5,1,5); plot(t, x1); axis([0 length(additiveMix) min(additiveMix) max(additiveMix)]);
 xlabel('Time'); ylabel('Adaptive Filter 2');
