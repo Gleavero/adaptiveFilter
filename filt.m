@@ -1,41 +1,36 @@
-function out=filt(noise,additiveMix, discreteSize,I, ha)
+function [out1,out2]=filt(noise,additiveMix, discreteSize,rI,pI, ha1, ha2)
+
 %Длина адаптивнго фильтра
-L = ha.Length;
+L = 32;
 %Коэффициент забывания
-lam = ha.ForgettingFactor;
+lam = 1;
+%Оценка дисперсии входного сигнала
+sigma = 0.1;
 %Начальный вектор коэффициентов
 w0 = zeros(L,1)';
 W = w0;
 %Начальные значения матрицы P
-P0 = ha.InitialInverseCovariance;
-% Цикл адаптации
-start=I;
-final=I+discreteSize;
+P0 = (1/sigma)*eye(L,L);
+%Начальное состояние фильтра
+Zi = zeros(L-1,1);
 
-lock = dsp.RLSFilter('Length',L,'ForgettingFactor',lam,'InitialInverseCovariance',P0,'InitialCoefficients',W,'LockCoefficients', true);
-[~,x_tmp] = lock(noise(1,1:start-1),additiveMix(1,1:start-1));
-x(1:start-1)= x_tmp;
+x = NaN(size(additiveMix));
+w0 = zeros(L,1)';
+W = w0;
 
-[~,x_tmp] = ha(noise(1,start:final),additiveMix(1,start:final));
-W = ha.Coefficients;
-x(start:final) = x_tmp;
-
-lock = dsp.RLSFilter('Length',L,'ForgettingFactor',lam,'InitialInverseCovariance',P0,'InitialCoefficients',W,'LockCoefficients', true);
-[~,x_tmp] = lock(noise(1,final+1:length(additiveMix)),additiveMix(1,final+1:length(additiveMix)));
-x(final+1:length(additiveMix))= x_tmp;
-% iterations = length(additiveMix)/discreteSize;
-% for i=1:iterations
-%     start = discreteSize*(i-1)+1;
-%     final = discreteSize*i;
-%     if i == I 
-%         [~,x_tmp] = ha(noise(1,start:final),additiveMix(1,start:final));
-%         W = ha.Coefficients;
-%         x(start:final) = x_tmp;
-%     else
-%         lock = dsp.RLSFilter('Length',L,'ForgettingFactor',lam,'InitialInverseCovariance',P0,'InitialCoefficients',W,'LockCoefficients', true);
-%         [~,x_tmp] = lock(noise(1,start:final),additiveMix(1,start:final));
-%         x(start:final) = x_tmp;
-%     end
-% end
-out=x;
+lenMix = length(additiveMix);
+for i=rI:lenMix-discreteSize 
+    %Объект адаптивного фильтра
+    ha = dsp.RLSFilter('Length',L,'ForgettingFactor',lam,'InitialInverseCovariance',P0,'InitialCoefficients',w0);
+    [~,x_tmp] = ha(noise(1,i:i+discreteSize),additiveMix(1,i:i+discreteSize));
+    x(i:i+discreteSize) = x_tmp;
+end
+for i=pI:lenMix-discreteSize
+    %Объект адаптивного фильтра
+    ha = dsp.RLSFilter('Length',L,'ForgettingFactor',lam,'InitialInverseCovariance',P0,'InitialCoefficients',w0);
+        [~,x_tmp] = ha(noise(1,i:i+discreteSize),additiveMix(1,i:i+discreteSize));
+        x1(i:i+discreteSize) = x_tmp;
+end
+out1=x;
+out2=x1;
 end
