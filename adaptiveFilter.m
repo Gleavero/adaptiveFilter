@@ -31,10 +31,10 @@ ha1 = dsp.RLSFilter('Length',L,'ForgettingFactor',lam,'InitialInverseCovariance'
 %Объект адаптивного фильтра 2
 ha2 = dsp.RLSFilter('Length',L,'ForgettingFactor',lam,'InitialInverseCovariance',P0,'InitialCoefficients',w0);
 
-[x,x1] = filt(noise,additiveMix,discreteSize,rI,pI,ha1,ha2);
+[x,x1,difference] = filt(noise,additiveMix,discreteSize,rI,pI,ha1,ha2);
 
-normX = x(pI+discreteSize:length(t))./norm(x(pI+discreteSize:length(t)));
-normX1 = x1(pI+discreteSize:length(t))./norm(x1(pI+discreteSize:length(t)));
+% normX = x(pI+discreteSize:length(t))./norm(x(pI+discreteSize:length(t)));
+% normX1 = x1(pI+discreteSize:length(t))./norm(x1(pI+discreteSize:length(t)));
 
 diff = pI-rI;
 
@@ -67,11 +67,11 @@ subplot(5,1,5); plot(t, x1);
 axis([0 length(additiveMix) min(additiveMix) max(additiveMix)]);
 xlabel('Time'); ylabel('Adaptive Filter 2');
 
-difference = (normX-normX1).^2;
-meanDiff = NaN(size(t));
-meanDiff(pI+discreteSize:length(t)) = movmean(difference, 64);
+% difference = (normX-normX1).^2;
+% meanDiff = NaN(size(t));
+meanDiff = movmean(difference, 64);
 
 figure
 subplot(1,1,1); plot(1:length(meanDiff),meanDiff); 
-axis([1 length(meanDiff) 0 0.01]);
+% axis([1 length(meanDiff) 0 0.01]);
 xlabel('Time'); ylabel('Mean Square Deviation');
