@@ -15,6 +15,7 @@ P0 = (1/sigma)*eye(L,L);
 Zi = zeros(L-1,1);
 
 x = NaN(size(additiveMix));
+x1 = NaN(size(additiveMix));
 w0 = zeros(L,1)';
 W = w0;
 diffI = pI-rI;
@@ -26,7 +27,7 @@ for i=rI:lenMix-(discreteSize+diffI)
      x1(i:i+discreteSize) = x_tmp2;
      normX1 = x_tmp1./norm(x_tmp1);
      normX2 = x_tmp2./norm(x_tmp2);
-     difference(i) = mean(normX1-normX2);
+     difference(i) = mean((normX1-normX2).^2);
 end
 % for i=pI:lenMix-discreteSize
 %     %Объект адаптивного фильтра

@@ -9,7 +9,7 @@ rI = 10;
 pI = rI+discreteSize*2;
 % pI = 160;
 % Генерация импульса
-impulse = generateImpulse(t,100);
+impulse = generateImpulse(t,200,120);
 % Генерация шума
 noise = generateNoise(t);
 % Смесь импульса с шумом
@@ -68,10 +68,10 @@ axis([0 length(additiveMix) min(additiveMix) max(additiveMix)]);
 xlabel('Time'); ylabel('Adaptive Filter 2');
 
 % difference = (normX-normX1).^2;
-% meanDiff = NaN(size(t));
-meanDiff = movmean(difference, 64);
+meanDiff = NaN(size(t));
+meanDiff(1:length(difference)) = movmean(difference, 64);
 
 figure
-subplot(1,1,1); plot(1:length(meanDiff),meanDiff); 
+subplot(1,1,1); plot(1:length(t),meanDiff); 
 % axis([1 length(meanDiff) 0 0.01]);
-xlabel('Time'); ylabel('Mean Square Deviation');
+xlabel('Time');
