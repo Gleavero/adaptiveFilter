@@ -1,20 +1,26 @@
 FrameSize = 200;
 impulseLength = 120;
-t = 1:1000;
-signal = NaN(size(t));
-NIter = length(t)/FrameSize;
-for i=1:NIter
-    for j=1:FrameSize
-       if impulseLength < FrameSize && j < impulseLength
-           tmp_signal(j) = 0.5*sin(2*pi*0.055*t(j));
-       else
-           tmp_signal(j) = 0;
-       end
-    end
-    if i == 1
-        signal(i:i*FrameSize) = tmp_signal;
-    else
-        sizeTest = signal((i-1)*FrameSize+1:i*FrameSize);
-        signal((i-1)*FrameSize+1:i*FrameSize) = tmp_signal;
-    end
-end
+t = 1:2000;
+% Генерация импульса
+impulse = generateImpulse(t,200,100);
+% Генерация шума
+noise = generateNoise(t);
+% Смесь импульса с шумом
+additiveMix = impulse+noise;
+%Длина адаптивнго фильтра
+L = 32;
+%Коэффициент забывания
+lam = 1;
+%Оценка дисперсии входного сигнала
+sigma = 0.1;
+%Начальный вектор коэффициентов
+w0 = zeros(L,1)';
+W = w0;
+W2 = w0;
+%Начальные значения матрицы P
+P0 = (1/sigma)*eye(L,L);
+%Объект адаптивного фильтра 1
+ha1 = dsp.RLSFilter('Length',L,'ForgettingFactor',lam,'InitialInverseCovariance',P0,'InitialCoefficients',w0);
+[~,x] = ha1(noise, additiveMix);
+
+plot(t,x);
