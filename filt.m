@@ -32,8 +32,8 @@ for i=rI:lenMix-(3*discreteSize+diffI)
     
     haU1 = dsp.RLSFilter('Length',L,'ForgettingFactor',lam,'InitialInverseCovariance',P0,'InitialCoefficients',W1,'LockCoefficients', true);
     haU2 = dsp.RLSFilter('Length',L,'ForgettingFactor',lam,'InitialInverseCovariance',P0,'InitialCoefficients',W2,'LockCoefficients', true);
-    [~,test1] = haU1(noise(1,(i+diffI+discreteSize):(i+diffI)+2*discreteSize),additiveMix(1,(i+diffI+discreteSize):(i+diffI)+2*discreteSize));
-    [~,test2] = haU2(noise(1,(i+diffI+discreteSize):(i+diffI)+2*discreteSize),additiveMix(1,(i+diffI+discreteSize):(i+diffI)+2*discreteSize));
+    [~,test1] = haU1(noise(1,(i+diffI+discreteSize+1):(i+diffI)+2*discreteSize),additiveMix(1,(i+diffI+discreteSize+1):(i+diffI)+2*discreteSize));
+    [~,test2] = haU2(noise(1,(i+diffI+discreteSize+1):(i+diffI)+2*discreteSize),additiveMix(1,(i+diffI+discreteSize+1):(i+diffI)+2*discreteSize));
     
     x(i:i+discreteSize) = x_tmp1;
     x1((i+diffI):(i+diffI)+discreteSize) = x_tmp2;

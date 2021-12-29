@@ -7,7 +7,7 @@ discreteSize = 32;
 rI = 10;
 % Начальное положение проверочного импульса
 % pI = rI+discreteSize*2;
-pI = 90;
+pI = 70;
 % Генерация импульса
 impulse = generateImpulse(t,400,100);
 % Генерация шума
@@ -57,7 +57,7 @@ xlabel('Time');
 subplot(6,1,2); plot(t, impulse, ...
     [rI rI+discreteSize; rI rI+discreteSize], [min(additiveMix) min(additiveMix);max(additiveMix) max(additiveMix)],'r--', ...
     [pI pI+discreteSize; pI pI+discreteSize],[min(additiveMix) min(additiveMix);max(additiveMix) max(additiveMix)],'g--', ...
-    [pI+discreteSize pI+3*discreteSize; pI+discreteSize pI+3*discreteSize],[min(additiveMix) min(additiveMix);max(additiveMix) max(additiveMix)],'b--'); 
+    [pI+discreteSize+1 pI+3*discreteSize; pI+discreteSize+1 pI+3*discreteSize],[min(additiveMix) min(additiveMix);max(additiveMix) max(additiveMix)],'b--'); 
 axis([0 length(additiveMix) min(additiveMix) max(additiveMix)]);
 xlabel('Time'); ylabel('Signal');
 
