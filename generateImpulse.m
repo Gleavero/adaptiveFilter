@@ -4,7 +4,17 @@ NIter = length(t)/FrameSize;
 for i=1:NIter
     for j=1:FrameSize
        if impulseLength < FrameSize && j < impulseLength
+           if j > 200 && j < 400
+               tmp_signal(j) = 3*sin(2*pi*0.055*t(j));
+           elseif j > 100 && j < 500
+               tmp_signal(j) = 2*sin(2*pi*0.055*t(j));
+           else
+%            Sinus imp
            tmp_signal(j) = 1*sin(2*pi*0.055*t(j));
+%            Square impulse
+%            tmp_signal(j) = 1;
+%            generateTrap(j,impulseLength);
+           end
        else
            tmp_signal(j) = 0;
        end
@@ -16,14 +26,9 @@ for i=1:NIter
         signal((i-1)*FrameSize+1:i*FrameSize) = tmp_signal;
     end
 end
-% for i=1:NIter
-%     if mod(i,2) == 0 
-%         signal((i-1)*FrameSize:i*FrameSize) = 0;
-%     elseif i == 1
-%       signal(i:i*FrameSize) = 0.5*sin(2*pi*0.055*t(i:i*FrameSize));
-%     else
-%       signal((i-1)*FrameSize:i*FrameSize) = 0.5*sin(2*pi*0.055*t((i-1)*FrameSize:i*FrameSize));
-%     end
-% end
+
+% signal(800:1000) = 0;
+% signal(2000:2200) = 1*sin(2*pi*0.055*t(2000:2200));
+
 out = signal;
 end
