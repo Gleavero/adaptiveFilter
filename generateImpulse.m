@@ -13,7 +13,6 @@ for i=1:NIter
            tmp_signal(j) = 1*sin(2*pi*0.055*t(j));
 %            Square impulse
 %            tmp_signal(j) = 1;
-%            generateTrap(j,impulseLength);
            end
        else
            tmp_signal(j) = 0;
